@@ -1,130 +1,233 @@
+/* Log Item Container */
 .log-item {
-  background: #1e1e1e;
-  border-left: 4px solid #666;
-  padding: 16px;
-  border-radius: 6px;
-  margin-bottom: 12px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-primary);
+  border-left-width: 3px;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .log-item:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-color: var(--color-border-secondary);
+  background: var(--color-bg-elevated);
 }
 
-.log-error {
-  border-left-color: #dc3545;
-  background: linear-gradient(to right, rgba(220, 53, 69, 0.1), #1e1e1e);
+.log-item.selected {
+  border-color: var(--color-accent);
+  background: var(--color-bg-elevated);
+  box-shadow: 0 0 0 1px var(--color-accent);
 }
 
-.log-warn {
-  border-left-color: #ffc107;
-  background: linear-gradient(to right, rgba(255, 193, 7, 0.1), #1e1e1e);
+.log-item.compact {
+  padding: var(--spacing-md);
 }
 
-.log-info {
-  border-left-color: #17a2b8;
-  background: linear-gradient(to right, rgba(23, 162, 184, 0.1), #1e1e1e);
+/* Level-based border colors */
+.log-item-error {
+  border-left-color: var(--color-error);
 }
 
-.log-debug {
-  border-left-color: #6c757d;
-  background: linear-gradient(to right, rgba(108, 117, 125, 0.1), #1e1e1e);
+.log-item-warn {
+  border-left-color: var(--color-warn);
 }
 
-.log-header {
+.log-item-info {
+  border-left-color: var(--color-info);
+}
+
+.log-item-debug {
+  border-left-color: var(--color-text-tertiary);
+}
+
+/* Log Item Header */
+.log-item-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+  gap: var(--spacing-md);
 }
 
+.log-item-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+/* Level Badge */
 .log-level-badge {
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.5px;
+  flex-shrink: 0;
 }
 
-.level-error {
-  background: #dc3545;
+.log-level-badge.error {
+  background: var(--color-error);
   color: #fff;
 }
 
-.level-warn {
-  background: #ffc107;
+.log-level-badge.warn {
+  background: var(--color-warn);
   color: #000;
 }
 
-.level-info {
-  background: #17a2b8;
+.log-level-badge.info {
+  background: var(--color-info);
   color: #fff;
 }
 
-.level-debug {
-  background: #6c757d;
+.log-level-badge.debug {
+  background: var(--color-text-tertiary);
   color: #fff;
 }
 
+/* Timestamp */
 .log-timestamp {
-  color: #888;
-  font-size: 13px;
-  font-family: "Courier New", monospace;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  flex-shrink: 0;
 }
 
-.log-message {
-  color: #fff;
-  font-size: 15px;
+.log-timestamp svg {
+  opacity: 0.6;
+}
+
+/* Meta Tags */
+.log-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+
+.log-meta-tag svg {
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+/* Expand Button */
+.expand-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.expand-btn:hover {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border-secondary);
+  color: var(--color-text-secondary);
+}
+
+/* Log Message */
+.log-item-message {
+  color: var(--color-text-primary);
+  font-size: 14px;
   line-height: 1.5;
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-md);
   word-break: break-word;
 }
 
-.log-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 8px;
-  margin-top: 12px;
+.compact .log-item-message {
+  font-size: 13px;
+  margin-bottom: var(--spacing-sm);
 }
 
-.log-detail-row {
+/* Log Metadata */
+.log-item-metadata {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
 }
 
-.log-detail-label {
-  color: #888;
-  font-size: 12px;
-  font-weight: 600;
+.metadata-item {
+  display: inline-flex;
+  align-items: center;
 }
 
-.log-detail-value {
-  color: #b0b0b0;
-  font-size: 12px;
-  font-family: "Courier New", monospace;
+.compact .log-item-metadata {
+  display: none;
 }
 
-.log-metadata {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #333;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .log-item {
+    padding: var(--spacing-md);
+  }
+
+  .log-item-header {
+    flex-wrap: wrap;
+  }
+
+  .log-item-left {
+    width: 100%;
+  }
+
+  .expand-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .log-item-message {
+    font-size: 13px;
+  }
+
+  .log-item-metadata {
+    gap: var(--spacing-sm);
+    font-size: 10px;
+  }
 }
 
-.log-metadata-label {
-  color: #888;
-  font-size: 12px;
-  font-weight: 600;
-  display: block;
-  margin-bottom: 6px;
-}
+@media (max-width: 480px) {
+  .log-item {
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+  }
 
-.log-metadata-content {
-  background: #2a2a2a;
-  padding: 12px;
-  border-radius: 4px;
-  color: #b0b0b0;
-  font-size: 12px;
-  overflow-x: auto;
-  margin: 0;
+  .log-item-header {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .log-meta-tag {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+
+  .log-level-badge {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
 }
