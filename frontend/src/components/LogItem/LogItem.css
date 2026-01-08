@@ -1,0 +1,130 @@
+.log-item {
+  background: #1e1e1e;
+  border-left: 4px solid #666;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.log-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.log-error {
+  border-left-color: #dc3545;
+  background: linear-gradient(to right, rgba(220, 53, 69, 0.1), #1e1e1e);
+}
+
+.log-warn {
+  border-left-color: #ffc107;
+  background: linear-gradient(to right, rgba(255, 193, 7, 0.1), #1e1e1e);
+}
+
+.log-info {
+  border-left-color: #17a2b8;
+  background: linear-gradient(to right, rgba(23, 162, 184, 0.1), #1e1e1e);
+}
+
+.log-debug {
+  border-left-color: #6c757d;
+  background: linear-gradient(to right, rgba(108, 117, 125, 0.1), #1e1e1e);
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.log-level-badge {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.level-error {
+  background: #dc3545;
+  color: #fff;
+}
+
+.level-warn {
+  background: #ffc107;
+  color: #000;
+}
+
+.level-info {
+  background: #17a2b8;
+  color: #fff;
+}
+
+.level-debug {
+  background: #6c757d;
+  color: #fff;
+}
+
+.log-timestamp {
+  color: #888;
+  font-size: 13px;
+  font-family: "Courier New", monospace;
+}
+
+.log-message {
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  word-break: break-word;
+}
+
+.log-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.log-detail-row {
+  display: flex;
+  gap: 8px;
+}
+
+.log-detail-label {
+  color: #888;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.log-detail-value {
+  color: #b0b0b0;
+  font-size: 12px;
+  font-family: "Courier New", monospace;
+}
+
+.log-metadata {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #333;
+}
+
+.log-metadata-label {
+  color: #888;
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.log-metadata-content {
+  background: #2a2a2a;
+  padding: 12px;
+  border-radius: 4px;
+  color: #b0b0b0;
+  font-size: 12px;
+  overflow-x: auto;
+  margin: 0;
+}
