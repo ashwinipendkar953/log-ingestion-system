@@ -7,9 +7,8 @@ const filterLogs = (logs, filters) => {
 
   // Filter by level
   if (filters.level) {
-    filteredLogs = filteredLogs.filter(
-      (log) => log.level.toLowerCase() === filters.level.toLowerCase()
-    );
+    const levels = filters.level.split(","); // ["error", "warn"]
+    filteredLogs = filteredLogs.filter((log) => levels.includes(log.level));
   }
 
   // Filter by message (case-insensitive full-text search)

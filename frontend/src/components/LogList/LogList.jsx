@@ -46,25 +46,6 @@ const LogList = ({
     <div className="log-list-container">
       <div className="log-list-header">
         <span className="log-count">{logs.length} events</span>
-        <div className="log-actions">
-          <button className="action-btn">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path
-                d="M8 2v12M2 8h12"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-            Export
-          </button>
-          <button className="action-btn">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 2a6 6 0 100 12A6 6 0 008 2zm1 9H7V7h2v4zm0-5H7V5h2v1z" />
-            </svg>
-            Share
-          </button>
-        </div>
       </div>
 
       <div className="log-stream">

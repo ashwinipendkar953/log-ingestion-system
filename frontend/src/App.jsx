@@ -14,9 +14,10 @@ function App() {
   const [selectedLog, setSelectedLog] = useState(null);
   const [viewMode, setViewMode] = useState("comfortable");
 
+  // ✅ MULTI-SELECT LEVEL FILTER
   const [filters, setFilters] = useState({
     message: "",
-    level: "",
+    levels: [], // ['error', 'warn']
     resourceId: "",
     traceId: "",
     spanId: "",
@@ -27,6 +28,9 @@ function App() {
 
   const debouncedMessage = useDebounce(filters.message, 500);
 
+  /* ------------------------
+     FILTER HANDLERS
+  -------------------------*/
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({
       ...prev,
@@ -34,10 +38,26 @@ function App() {
     }));
   };
 
+  const toggleLevelFilter = (level) => {
+    setFilters((prev) => {
+      const exists = prev.levels.includes(level);
+      return {
+        ...prev,
+        levels: exists
+          ? prev.levels.filter((l) => l !== level)
+          : [...prev.levels, level],
+      };
+    });
+  };
+
+  const clearAllLevels = () => {
+    setFilters((prev) => ({ ...prev, levels: [] }));
+  };
+
   const handleClearFilters = () => {
     setFilters({
       message: "",
-      level: "",
+      levels: [],
       resourceId: "",
       traceId: "",
       spanId: "",
@@ -47,22 +67,36 @@ function App() {
     });
   };
 
+  /* ------------------------
+     LOAD LOGS
+  -------------------------*/
   const loadLogs = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const apiFilters = { ...filters };
-      apiFilters.message = debouncedMessage;
+      const apiFilters = {
+        message: debouncedMessage,
+        resourceId: filters.resourceId,
+        traceId: filters.traceId,
+        spanId: filters.spanId,
+        commit: filters.commit,
+      };
 
-      if (apiFilters.timestamp_start) {
+      // Multi-level → comma-separated
+      if (filters.levels.length > 0) {
+        apiFilters.level = filters.levels.join(",");
+      }
+
+      if (filters.timestamp_start) {
         apiFilters.timestamp_start = new Date(
-          apiFilters.timestamp_start
+          filters.timestamp_start
         ).toISOString();
       }
-      if (apiFilters.timestamp_end) {
+
+      if (filters.timestamp_end) {
         apiFilters.timestamp_end = new Date(
-          apiFilters.timestamp_end
+          filters.timestamp_end
         ).toISOString();
       }
 
@@ -70,7 +104,6 @@ function App() {
       setLogs(data);
     } catch (err) {
       setError(err.message || "Failed to load logs");
-      console.error("Error loading logs:", err);
     } finally {
       setLoading(false);
     }
@@ -80,7 +113,7 @@ function App() {
     loadLogs();
   }, [
     debouncedMessage,
-    filters.level,
+    filters.levels,
     filters.resourceId,
     filters.traceId,
     filters.spanId,
@@ -89,18 +122,21 @@ function App() {
     filters.timestamp_end,
   ]);
 
+  /* ------------------------
+     SIDEBAR STATS
+  -------------------------*/
   const logStats = useMemo(() => {
-    const levelCounts = logs.reduce((acc, log) => {
+    const counts = logs.reduce((acc, log) => {
       acc[log.level] = (acc[log.level] || 0) + 1;
       return acc;
     }, {});
 
     return {
       total: logs.length,
-      error: levelCounts.error || 0,
-      warn: levelCounts.warn || 0,
-      info: levelCounts.info || 0,
-      debug: levelCounts.debug || 0,
+      error: counts.error || 0,
+      warn: counts.warn || 0,
+      info: counts.info || 0,
+      debug: counts.debug || 0,
     };
   }, [logs]);
 
@@ -112,6 +148,9 @@ function App() {
     return counts;
   }, [logs]);
 
+  /* ------------------------
+     RENDER
+  -------------------------*/
   return (
     <div className="app">
       <nav className="top-nav">
@@ -141,58 +180,7 @@ function App() {
               </svg>
               Logs
             </button>
-            <button className="nav-tab">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-              >
-                <path d="M14 2H2v12h12V2zM4 12V4h8v8H4z" />
-              </svg>
-              Metrics
-            </button>
-            <button className="nav-tab">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-              >
-                <path d="M2 2l6 6-6 6V2zm8 0l4 6-4 6V2z" />
-              </svg>
-              Traces
-            </button>
-            <button className="nav-tab">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-              >
-                <path d="M8 2a6 6 0 100 12A6 6 0 008 2z" />
-              </svg>
-              APM
-            </button>
           </div>
-        </div>
-
-        <div className="nav-right">
-          <button className="icon-btn" title="Pause">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
-              <path d="M6 4h2v10H6V4zm4 0h2v10h-2V4z" />
-            </svg>
-          </button>
-          <button className="icon-btn" title="Settings">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
-              <path d="M9 11a2 2 0 100-4 2 2 0 000 4z" />
-              <path
-                fillRule="evenodd"
-                d="M7.5 2h3l.5 1.5 1.5.5 1.5-.5 2 2-.5 1.5.5 1.5v3l-1.5.5-.5 1.5.5 1.5-2 2-1.5-.5-1.5.5h-3l-.5-1.5-1.5-.5-.5 1.5-2-2 .5-1.5-.5-1.5v-3l1.5-.5.5-1.5-.5-1.5 2-2 1.5.5L7.5 2z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
         </div>
       </nav>
 
@@ -201,6 +189,8 @@ function App() {
           stats={logStats}
           resourceCounts={resourceCounts}
           filters={filters}
+          onToggleLevel={toggleLevelFilter}
+          onClearLevels={clearAllLevels}
           onFilterChange={handleFilterChange}
         />
 
