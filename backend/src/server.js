@@ -28,7 +28,11 @@ app.get("/health", (req, res) => {
 // Error handling middleware
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📊 Logs API available at http://localhost:${PORT}/logs`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📊 Logs API available at http://localhost:${PORT}/logs`);
+  });
+}
+
+module.exports = app;
