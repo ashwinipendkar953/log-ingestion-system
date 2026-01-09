@@ -28,7 +28,7 @@ app.get("/health", (req, res) => {
 // Error handling middleware
 app.use(errorHandler);
 
-if (!process.env.VERCEL) {
+if (process.env.NODE_ENV === "development") {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
     console.log(`📊 Logs API available at http://localhost:${PORT}/logs`);

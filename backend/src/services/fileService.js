@@ -1,7 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 
-const DATA_FILE_PATH = path.join(__dirname, "../../data/logs.json");
+const DATA_FILE_PATH =
+  process.env.NODE_ENV === "production"
+    ? "/tmp/logs.json"
+    : path.join(__dirname, "../../data/logs.json");
 
 // In-memory cache for performance
 let logsCache = [];
